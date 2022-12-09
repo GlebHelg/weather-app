@@ -9,7 +9,6 @@ interface IDashboardProps {
 const Dashboard = ({name, temp}: IDashboardProps) => {
     return (<>
         <p className={style.dasboardBtn}>{name}</p>
-        <p className={style.dasboardBtn}>{temp}</p>
     </>);
 }
 
