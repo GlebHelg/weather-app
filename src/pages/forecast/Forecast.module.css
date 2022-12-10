@@ -74,11 +74,10 @@
 }
 
 /* ------------------- */
-
+/* 
 .secondaryInfoCard{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
     grid-column-gap: 1px;
     grid-row-gap: 1px;
     background-color: #000;
@@ -90,4 +89,4 @@
     background-color: white;
     padding: 5px;
     text-align: center;
-}
+} */

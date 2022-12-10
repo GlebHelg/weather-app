@@ -1,3 +1,8 @@
-.dasboardBtn{
-    background-color:aqua;
+
+.sicElement{ 
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 5px;
+    text-align: center;
 }

@@ -1,15 +1,17 @@
 import React from 'react';
-import style from "./SecondaryInfoCardElement.module.css"
+import style from "./SicElement.module.css"
 
 interface ISicElementProps {
-    name: string;
-    temp: string;
+    title: string;
+    value: string;
 }
 
-const SicElement = ({name, temp}: ISicElementProps) => {
+const SicElement = ({title, value}: ISicElementProps) => {
     return (<>
-        <p className={style.dasboardBtn}>{name}</p>
-        <p className={style.dasboardBtn}>{temp}</p>
+        <div className={style.sicElement}>
+            <span>{title}</span>
+            <span>{value}</span>
+        </div>
     </>);
 }
 

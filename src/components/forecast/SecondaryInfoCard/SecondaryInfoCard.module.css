@@ -1,3 +1,8 @@
-.dasboardBtn{
-    background-color:aqua;
+
+.secondaryInfoCard{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 1px;
+    grid-row-gap: 1px;
+    background-color: #000;
 }

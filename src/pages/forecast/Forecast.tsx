@@ -2,11 +2,16 @@ import React from 'react';
 import style from "./Forecast.module.css"
 
 import { IWeatherForecast } from '../../common/interfaces';
+import SecondaryInfoCard from '../../components/forecast/SecondaryInfoCard/SecondaryInfoCard';
+import PrimaryInfoCard from '../../components/forecast/PrimaryInfoCard/PrimaryInfoCard';
+import { convertTempToUnit, getHHMMFromDate } from '../../common/utils';
 
 interface IForecastProps {
     forecastObj: IWeatherForecast;
     selectForecast: React.Dispatch<React.SetStateAction<number | null>>;
 }
+
+
 
 const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
 
@@ -15,20 +20,34 @@ const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
 
     const cityName   = forecastObj.city.name
     
+    // For PrimaryInfoCard
     let outlook    = forecastObj.list[0].weather[0].description
     outlook        = outlook[0].toUpperCase()+outlook.slice(1)
+    const unit = "C";
+    const outlookText = outlook;
+    const temp        = {value: convertTempToUnit(forecastObj.list[0].main.temp, unit), unit: unit};
+    const tempH       = {value: convertTempToUnit(forecastObj.list[0].main.temp_max, unit), unit: unit};
+    const tempL       = {value: convertTempToUnit(forecastObj.list[0].main.temp_min, unit), unit: unit};
 
-    const temp       = forecastObj.list[0].main.temp
-    const tempH      = forecastObj.list[0].main.temp_max
-    const tempL      = forecastObj.list[0].main.temp_min
-    const sunriseHHMM   = [0, 1].map(x => sunriseDO.toTimeString().split(':')[x]).join(':')
-    const sunsetHHMM     = [0, 1].map(x => sunsetDO.toTimeString().split(':')[x]).join(':')
-    const humidityPrct   = forecastObj.list[0].main.humidity // %
-    const visibilityKm = (forecastObj.list[0].visibility / 1000) // Km
-
-
-    const unit = "°K";
-    // +" "+style.forecastHeaderArrow
+    // For SecondaryInfoCard
+    const sicObjects = [
+        {
+            title: "Sunrise",
+            value: getHHMMFromDate(sunriseDO)
+        },
+        {
+            title: "Sunset",
+            value: getHHMMFromDate(sunsetDO)
+        },
+        {
+            title: "Humidity",
+            value: forecastObj.list[0].main.humidity+" %"
+        },
+        {
+            title: "Visibility",
+            value: (forecastObj.list[0].visibility / 1000) + " Km"
+        }
+    ]
 
     return (<>
         <div className={style.forecastHeader}>
@@ -48,32 +67,13 @@ const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
         </div>
 
         <div className={style.forecastMainSection}>
-            <div className={style.primaryInfoCard}>
-                <span className={style.primaryInfoCardTop}>{outlook}</span>
-                <span className={style.primaryInfoCardCenter}>{temp}{unit}</span>
-                <div className={style.primaryInfoCardBottom}>
-                    <span className={""}>H: {tempH}</span>
-                    <span className={""}>L: {tempL}</span>
-                </div>
-            </div>
-            <div className={style.secondaryInfoCard}>
-                <div className={style.sicElement}>
-                    <span>Sunrise</span>
-                    <span>{sunriseHHMM}</span>
-                </div>
-                <div className={style.sicElement}>
-                    <span>Sunset</span>
-                    <span>{sunsetHHMM}</span>
-                </div>
-                <div className={style.sicElement}>
-                    <span>Humidity</span>
-                    <span>{humidityPrct}%</span>
-                </div>
-                <div className={style.sicElement}>
-                    <span>Visibility</span>
-                    <span>{visibilityKm} Km</span>
-                </div>
-            </div>
+            <PrimaryInfoCard    outlookText={outlookText}
+                                temp={temp}
+                                tempH={tempH}
+                                tempL={tempL}
+                                />
+
+            <SecondaryInfoCard sicObjects={sicObjects}/>
         </div>
 
 

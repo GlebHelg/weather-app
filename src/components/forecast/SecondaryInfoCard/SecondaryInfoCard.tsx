@@ -1,15 +1,18 @@
-import React from 'react';
-import style from "./Forecast.module.css"
+import style from "./SecondaryInfoCard.module.css"
+import SicElement from "./SicElement/SicElement";
 
 interface ISecondaryInfoCardProps {
-    name: string;
-    temp: string;
+    sicObjects: {
+        title: string;
+        value: string;
+    }[];
 }
 
-const SecondaryInfoCard = ({name, temp}: ISecondaryInfoCardProps) => {
+const SecondaryInfoCard = ({sicObjects}: ISecondaryInfoCardProps) => {
     return (<>
-        <p className={style.dasboardBtn}>{name}</p>
-        <p className={style.dasboardBtn}>{temp}</p>
+        <div className={style.secondaryInfoCard}>
+            {sicObjects.map(so => <SicElement title={so.title} value={so.value} />)}
+        </div>
     </>);
 }
 
