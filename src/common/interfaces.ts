@@ -12,7 +12,7 @@ export interface IGeoLocCities {
 export interface IWeatherForecast{
     city: IWeatherForecastCity;
     cnt: number;
-    list: IWeatherForecastListElem;
+    list: IWeatherForecastListElem[];
   
 }
   
