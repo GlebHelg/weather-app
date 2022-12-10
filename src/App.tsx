@@ -4,7 +4,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Forecast from './pages/forecast/Forecast';
 
 import {ILookupCities, IGeoLocCities, IWeatherForecast} from './common/interfaces';
-import { IDashboardProps, IDashboardPropElem } from './pages/dashboard/dashboardInterfaces';
+import { IDashboardBtnObj } from './pages/dashboard/dashboardInterfaces';
 
 const getCityGeoLocPromise = (co: any) => {
   return fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${co.city}&limit=1&appid=3683c0f2ebd11c8063d6f9d995541a8e`);
@@ -81,21 +81,22 @@ function App() {
   
 
 
-  const dashboardBtnObjs: IDashboardPropElem[] = weatherForecasts.map(x => {
+  const dashboardBtnObjs: IDashboardBtnObj[] = weatherForecasts.map(x => {
     return {
             cityId: x.city.id, 
             cityName: x.city.name,
             currentTempK: x.list[0].main.temp
           }
   })
-
   console.log('dashboardBtnObjs: ', dashboardBtnObjs);
+
+  const forecastObj: IWeatherForecast | undefined = weatherForecasts.find(x => x.city.id === selectedForecast)
 
   return (
     <>
       {
       selectedForecast ? 
-        <Forecast name={"Berlin"} temp={"12C"} /> :
+        <Forecast forecastObj={forecastObj} selectForecast={setSelectedForecast}/> :
         <Dashboard dashboardBtnObjs={dashboardBtnObjs} selectForecast={setSelectedForecast}/>
       }
     </>

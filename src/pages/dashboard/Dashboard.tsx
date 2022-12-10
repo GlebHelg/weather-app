@@ -1,6 +1,11 @@
 import React from 'react';
 import style from "./Dashboard.module.css"
-import { IDashboardProps } from './dashboardInterfaces';
+import { IDashboardBtnObj } from './dashboardInterfaces';
+
+interface IDashboardProps{
+    dashboardBtnObjs: IDashboardBtnObj[];
+    selectForecast: React.Dispatch<React.SetStateAction<number | null>>
+}
 
 const Dashboard = ({dashboardBtnObjs, selectForecast}: IDashboardProps) => {
 

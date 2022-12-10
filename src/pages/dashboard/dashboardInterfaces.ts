@@ -1,9 +1,4 @@
-export interface IDashboardProps{
-    dashboardBtnObjs: IDashboardPropElem[];
-    selectForecast: React.Dispatch<React.SetStateAction<number | null>>
-}
-
-export interface IDashboardPropElem {
+export interface IDashboardBtnObj {
     cityId: number; 
     cityName: string;
     currentTempK: number;

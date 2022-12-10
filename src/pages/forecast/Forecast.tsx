@@ -1,15 +1,17 @@
 import React from 'react';
 import style from "./Forecast.module.css"
 
+import { IWeatherForecast } from '../../common/interfaces';
+
 interface IForecastProps {
-    name: string;
-    temp: string;
+    forecastObj: IWeatherForecast | undefined;
+    selectForecast: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const Forecast = ({name, temp}: IForecastProps) => {
+const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
     return (<>
-        <p className={style.dasboardBtn}>{name}</p>
-        <p className={style.dasboardBtn}>{temp}</p>
+        <button className={style.dasboardBtn} onClick={() => selectForecast(null)}>←</button>
+        <p className={style.dasboardBtn}>{JSON.stringify(forecastObj)}</p>
     </>);
 }
 
