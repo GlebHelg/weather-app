@@ -96,7 +96,7 @@ function App() {
     <>
       {
       selectedForecast ? 
-        <Forecast forecastObj={forecastObj} selectForecast={setSelectedForecast}/> :
+        <Forecast forecastObj={forecastObj as IWeatherForecast} selectForecast={setSelectedForecast}/> :
         <Dashboard dashboardBtnObjs={dashboardBtnObjs} selectForecast={setSelectedForecast}/>
       }
     </>
