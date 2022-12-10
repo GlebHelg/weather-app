@@ -1,3 +1,93 @@
-.dasboardBtn{
-    background-color:aqua;
+.forecastHeader{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    font-size: x-small;
+    /* align-items: stretch; */
+}
+
+.forecastHeaderElem{
+    text-align: center;
+    margin: 0;
+}
+
+.forecastHeaderArrowWrap{
+    text-align: left;
+    background: none;
+    justify-content: center;
+    border: none;
+    
+}
+
+.forecastHeaderText{
+    margin-bottom: 12px;
+    align-self: center;
+}
+
+.forecastHeaderBtn{
+	background: none;
+	color: black;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+    font-size: x-large;
+    margin: 3px;
+    
+}
+
+.forecastHeaderBtn svg{
+    width: 33px;
+    fill: none;
+    stroke: #000;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2px;
+}
+
+
+.forecastMainSection{
+    display: flex;
+    justify-content:space-evenly ;
+    margin-top: 30px;
+}
+
+/* ------------------- */
+
+.primaryInfoCard{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.primaryInfoCardTop{
+    font-size: x-large;
+}
+
+.primaryInfoCardCenter{
+    font-size: xx-large;
+}
+
+.primaryInfoCardBottom{
+    display: flex;
+    gap: .5rem;
+}
+
+/* ------------------- */
+
+.secondaryInfoCard{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 1px;
+    grid-row-gap: 1px;
+    background-color: #000;
+}
+
+.sicElement{ 
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 5px;
+    text-align: center;
 }

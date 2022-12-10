@@ -14,7 +14,10 @@ const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
     const sunsetDO  = new Date(forecastObj.city.sunset * 1000);
 
     const cityName   = forecastObj.city.name
-    const outlook    = forecastObj.list[0].weather[0].description
+    
+    let outlook    = forecastObj.list[0].weather[0].description
+    outlook        = outlook[0].toUpperCase()+outlook.slice(1)
+
     const temp       = forecastObj.list[0].main.temp
     const tempH      = forecastObj.list[0].main.temp_max
     const tempL      = forecastObj.list[0].main.temp_min
@@ -24,23 +27,55 @@ const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
     const visibilityKm = (forecastObj.list[0].visibility / 1000) // Km
 
 
-
-
+    const unit = "°K";
+    // +" "+style.forecastHeaderArrow
 
     return (<>
-        <h3>Forecast</h3>
-        <button className={style.dasboardBtn} onClick={() => selectForecast(null)}>←</button>
-        <p className={style.dasboardBtn}>City: {cityName}</p>
+        <div className={style.forecastHeader}>
+            <div className={style.forecastHeaderElem +" "+style.forecastHeaderArrowWrap}>
+                <button className={style.forecastHeaderBtn} onClick={() => selectForecast(null)}>
+                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                        <defs></defs>
+                        <title/><g id="arrow-left">
+                            <line className="cls-1" x1="3" x2="29" y1="16" y2="16"/>
+                            <line className="cls-1" x1="3" x2="7" y1="16" y2="11"/>
+                            <line className="cls-1" x1="3" x2="7" y1="16" y2="21"/></g>
+                    </svg>
+                </button>
+            </div>
+            <h1 className={style.forecastHeaderElem+" "+style.forecastHeaderText}>{cityName}</h1>
+            <div  />
+        </div>
 
-        <p className={style.dasboardBtn}>Outlook: {outlook}</p>
-        <p className={style.dasboardBtn}>Temp: {temp}</p>
-        <p className={style.dasboardBtn}>TempH: {tempH}</p>
-        <p className={style.dasboardBtn}>TempL: {tempL}</p>
+        <div className={style.forecastMainSection}>
+            <div className={style.primaryInfoCard}>
+                <span className={style.primaryInfoCardTop}>{outlook}</span>
+                <span className={style.primaryInfoCardCenter}>{temp}{unit}</span>
+                <div className={style.primaryInfoCardBottom}>
+                    <span className={""}>H: {tempH}</span>
+                    <span className={""}>L: {tempL}</span>
+                </div>
+            </div>
+            <div className={style.secondaryInfoCard}>
+                <div className={style.sicElement}>
+                    <span>Sunrise</span>
+                    <span>{sunriseHHMM}</span>
+                </div>
+                <div className={style.sicElement}>
+                    <span>Sunset</span>
+                    <span>{sunsetHHMM}</span>
+                </div>
+                <div className={style.sicElement}>
+                    <span>Humidity</span>
+                    <span>{humidityPrct}%</span>
+                </div>
+                <div className={style.sicElement}>
+                    <span>Visibility</span>
+                    <span>{visibilityKm} Km</span>
+                </div>
+            </div>
+        </div>
 
-        <p className={style.dasboardBtn}>Sunrise: {sunriseHHMM}</p>
-        <p className={style.dasboardBtn}>Sunset: {sunsetHHMM}</p>
-        <p className={style.dasboardBtn}>Humidity: {humidityPrct}</p>
-        <p className={style.dasboardBtn}>Visibility: {visibilityKm}</p>
 
     </>);
 }
