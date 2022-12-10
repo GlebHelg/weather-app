@@ -2,6 +2,8 @@ import React from 'react';
 import style from "./Dashboard.module.css"
 import { IDashboardBtnObj } from './dashboardInterfaces';
 
+import DashboardBtn from '../../components/dashboard/DashboardBtn/DashboardBtn';
+
 interface IDashboardProps{
     dashboardBtnObjs: IDashboardBtnObj[];
     selectForecast: React.Dispatch<React.SetStateAction<number | null>>
@@ -13,8 +15,12 @@ const Dashboard = ({dashboardBtnObjs, selectForecast}: IDashboardProps) => {
     console.log('presentationButtons: ', presentationButtons);
     
     return (<>
-        <h3>Dashboard</h3>
-        {presentationButtons}
+        <div className={style.dashboardHeader}>
+            <h1>Dashboard</h1>
+        </div>
+        <div className={style.dashboardBtns}>
+            {dashboardBtnObjs.map(btnObj => <DashboardBtn dashboardBtnObj={btnObj} selectForecast={selectForecast}/> )}
+        </div>
     </>);
 }
 

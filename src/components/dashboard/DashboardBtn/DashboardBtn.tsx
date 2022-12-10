@@ -1,15 +1,19 @@
 import React from 'react';
+import { IDashboardBtnObj } from '../../../pages/dashboard/dashboardInterfaces';
 import style from "./DashboardBtn.module.css"
 
 interface IDashboardBtnProps {
-    name: string;
-    temp: string;
+    dashboardBtnObj: IDashboardBtnObj;
+    selectForecast: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const DashboardBtn = ({name, temp}: IDashboardBtnProps) => {
+const DashboardBtn = ({dashboardBtnObj, selectForecast}: IDashboardBtnProps) => {
+    const dbo = dashboardBtnObj;
     return (<>
-        <p className={style.dasboardBtn}>{name}</p>
-        <p className={style.dasboardBtn}>{temp}</p>
+        <button className={style.dasboardBtn} onClick={() => selectForecast(dbo.cityId)}>
+            <span>{dbo.cityName}</span>
+            <span>{dbo.currentTempK}</span>
+        </button>
     </>);
 }
 
