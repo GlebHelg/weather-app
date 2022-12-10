@@ -11,8 +11,6 @@ interface IForecastProps {
     selectForecast: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-
-
 const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
 
     const sunriseDO = new Date(forecastObj.city.sunrise * 1000);

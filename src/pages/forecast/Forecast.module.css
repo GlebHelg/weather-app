@@ -1,6 +1,6 @@
 .forecastHeader{
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(3, 1fr);
     font-size: x-small;
     /* align-items: stretch; */
 }
@@ -52,9 +52,19 @@
     margin-top: 30px;
 }
 
+@media(max-width: 600px){
+    .forecastMainSection{
+        display: flex;
+        flex-direction: column;
+    }
+    .forecastMainSection > div{
+        margin: 20px 20px 20px 20px;
+    }
+}
+
 /* ------------------- */
 
-.primaryInfoCard{
+/* .primaryInfoCard{
     display:flex;
     flex-direction: column;
     align-items: center;
@@ -71,7 +81,7 @@
 .primaryInfoCardBottom{
     display: flex;
     gap: .5rem;
-}
+} */
 
 /* ------------------- */
 /* 
