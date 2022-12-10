@@ -2,7 +2,6 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     font-size: x-small;
-    /* align-items: stretch; */
 }
 
 .forecastHeaderElem{
@@ -11,11 +10,7 @@
 }
 
 .forecastHeaderArrowWrap{
-    text-align: left;
-    background: none;
-    justify-content: center;
-    border: none;
-    
+    text-align: left;    
 }
 
 .forecastHeaderText{
@@ -25,13 +20,9 @@
 
 .forecastHeaderBtn{
 	background: none;
-	color: black;
 	border: none;
 	padding: 0;
-	font: inherit;
 	cursor: pointer;
-	outline: inherit;
-    font-size: x-large;
     margin: 3px;
     
 }
@@ -61,42 +52,3 @@
         margin: 20px 20px 20px 20px;
     }
 }
-
-/* ------------------- */
-
-/* .primaryInfoCard{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.primaryInfoCardTop{
-    font-size: x-large;
-}
-
-.primaryInfoCardCenter{
-    font-size: xx-large;
-}
-
-.primaryInfoCardBottom{
-    display: flex;
-    gap: .5rem;
-} */
-
-/* ------------------- */
-/* 
-.secondaryInfoCard{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-column-gap: 1px;
-    grid-row-gap: 1px;
-    background-color: #000;
-}
-
-.sicElement{ 
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    padding: 5px;
-    text-align: center;
-} */
