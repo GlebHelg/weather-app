@@ -1,16 +1,15 @@
 import React, {useState, useMemo} from 'react';
 import './App.css';
-import DashboardBtn from './components/dashboard/DashboardBtn/DashboardBtn';
 import Dashboard from './pages/dashboard/Dashboard';
 import Forecast from './pages/forecast/Forecast';
 
-
+import {ILookupCities, IGeoLocCities, IWeatherForecast} from './common/interfaces';
 
 const getCityGeoLocPromise = (co: any) => {
   return fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${co.city}&limit=1&appid=3683c0f2ebd11c8063d6f9d995541a8e`);
 }
 
-const resolveAndSetGeoLocCities = (citiesSearchPromises: any[], setGeoLocCities: any) => {
+const resolveAndSetGeoLocCities = (citiesSearchPromises: Promise<Response>[], setGeoLocCities: React.Dispatch<React.SetStateAction<IGeoLocCities[]>>) => {
   Promise.all(citiesSearchPromises)
         .then(responses => {
           return Promise.all(responses.map(resp => resp.text()))
@@ -22,28 +21,28 @@ const resolveAndSetGeoLocCities = (citiesSearchPromises: any[], setGeoLocCities:
 
 const getForecastPromise = (glco: any) => {
   const queryString = `http://api.openweathermap.org/data/2.5/forecast?lat=${glco.lat}&lon=${glco.lon}&appid=3683c0f2ebd11c8063d6f9d995541a8e`
-  console.log('queryString: ', queryString)
   return fetch(queryString);
 }
 
-const resolveAndSetWeatherForecasts = (citiesSearchPromises: any[], setGeoLocCities: any) => {
+const resolveAndSetWeatherForecasts = (citiesSearchPromises: Promise<Response>[], setWeatherForecasts: React.Dispatch<React.SetStateAction<IWeatherForecast[]>>) => {
   Promise.all(citiesSearchPromises)
         .then(responses => {
           return Promise.all(responses.map(resp => resp.text()))
         })
         .then((respTextArr:string[]) => {
           console.log('respTextArr: ', respTextArr)
-          setGeoLocCities(respTextArr.map(respTextElem => JSON.parse(respTextElem) )) 
+          setWeatherForecasts(respTextArr.map(respTextElem => JSON.parse(respTextElem) )) 
         });
 }
+
 
 
 function App() {
   const [allForecasts, setAllForecasts] = useState(null);
   const [selectedForecast, setSelectedForecast] = useState(null);
 
-
-  const [citiesToLookup, setCitiesToLookup] = useState([
+  // made like object due to assumption that country code can be sent to API
+  const [citiesToLookup, setCitiesToLookup] = useState<ILookupCities[]>([
     {
       city: 'Berlin',
       country: 'DE'
@@ -58,10 +57,10 @@ function App() {
     }
   ]);
 
-  // fetchStates
-  const [geoLocCities, setGeoLocCities] = useState([]);
+  // fetch states 
+  const [geoLocCities, setGeoLocCities] = useState<IGeoLocCities[]>([]);
   console.log('geoLocCities: ', geoLocCities)
-  const [weatherForecasts, setWeatherForecasts] = useState([]);
+  const [weatherForecasts, setWeatherForecasts] = useState<IWeatherForecast[]>([]);
   console.log('weatherForecasts: ', weatherForecasts)
 
   // Geo Loc
