@@ -18,10 +18,10 @@ const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
     const temp       = forecastObj.list[0].main.temp
     const tempH      = forecastObj.list[0].main.temp_max
     const tempL      = forecastObj.list[0].main.temp_min
-    const sunrise    = [0, 1].map(x => sunriseDO.toTimeString().split(':')[x]).join(':')
-    const sunset     = [0, 1].map(x => sunsetDO.toTimeString().split(':')[x]).join(':')
-    const humidity   = forecastObj.list[0].main.humidity
-    const visibility = forecastObj.list[0].visibility
+    const sunriseHHMM   = [0, 1].map(x => sunriseDO.toTimeString().split(':')[x]).join(':')
+    const sunsetHHMM     = [0, 1].map(x => sunsetDO.toTimeString().split(':')[x]).join(':')
+    const humidityPrct   = forecastObj.list[0].main.humidity // %
+    const visibilityKm = (forecastObj.list[0].visibility / 1000) // Km
 
 
 
@@ -37,10 +37,10 @@ const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
         <p className={style.dasboardBtn}>TempH: {tempH}</p>
         <p className={style.dasboardBtn}>TempL: {tempL}</p>
 
-        <p className={style.dasboardBtn}>Sunrise: {sunrise}</p>
-        <p className={style.dasboardBtn}>Sunset: {sunset}</p>
-        <p className={style.dasboardBtn}>Humidity: {humidity}</p>
-        <p className={style.dasboardBtn}>Visibility: {visibility}</p>
+        <p className={style.dasboardBtn}>Sunrise: {sunriseHHMM}</p>
+        <p className={style.dasboardBtn}>Sunset: {sunsetHHMM}</p>
+        <p className={style.dasboardBtn}>Humidity: {humidityPrct}</p>
+        <p className={style.dasboardBtn}>Visibility: {visibilityKm}</p>
 
     </>);
 }
