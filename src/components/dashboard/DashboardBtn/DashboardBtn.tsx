@@ -21,8 +21,10 @@ const DashboardBtn = ({dashboardBtnObj, tempUnit, co}: IDashboardBtnProps) => {
 
     const removeLookupCity = () => {
         const idx = co.citiesToLookup.findIndex(x => x.city === dbo.cityName)
-        co.citiesToLookup.splice(idx, 1)
-        co.setCitiesToLookup(co.citiesToLookup)
+        if(idx !== -1){
+            co.citiesToLookup.splice(idx, 1)
+            co.setCitiesToLookup(co.citiesToLookup)
+        }
     }
 
     return (<>

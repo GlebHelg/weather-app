@@ -68,7 +68,7 @@ const resolveAndSetWeatherForecasts = (citiesSearchPromises: Promise<Response>[]
 }
 
 const getLookupCitiesFromLocal = () => {
-  if(localStorage["citiesToLookup"]){
+  if(localStorage["citiesToLookup"] && localStorage["citiesToLookup"] !== '[]'){
     return JSON.parse(localStorage["citiesToLookup"])
   }
   else{
@@ -113,7 +113,7 @@ function App() {
     }
   }
   const showPosition = (position: any) => {
-    setCurrentPosition({name: "My Location",lat: position.coords.latitude, lon: position.coords.longitude})
+    setCurrentPosition({name: "My Location", lat: position.coords.latitude, lon: position.coords.longitude})
   }
   useMemo(() => {getLocation()}, [JSON.stringify(currentPosition)])
 
