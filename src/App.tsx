@@ -31,16 +31,28 @@ const resolveAndSetWeatherForecasts = (citiesSearchPromises: Promise<Response>[]
           return Promise.all(responses.map(resp => resp.text()))
         })
         .then((respTextArr:string[]) => {
-          console.log('respTextArr: ', respTextArr)
           setWeatherForecasts(respTextArr.map(respTextElem => JSON.parse(respTextElem) )) 
         });
 }
 
 
-
 function App() {
-  const [allForecasts, setAllForecasts] = useState(null);
   const [selectedForecast, setSelectedForecast] = useState<number | null>(null);
+  
+  const [currentPosition, setCurrentPosition] = useState<IGeoLocCities | null>(null)
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      return navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      return "Geolocation is not supported by this browser.";
+    }
+  }
+  const showPosition = (position: any) => {
+    setCurrentPosition({name: "My Location",lat: position.coords.latitude, lon: position.coords.longitude})
+  }
+  useMemo(() => {getLocation()}, [JSON.stringify(currentPosition)])
+  //console.log('currentPosition: ', currentPosition);
 
   // made like object due to assumption that country code can be sent to API
   const [citiesToLookup, setCitiesToLookup] = useState<ILookupCities[]>([
@@ -60,9 +72,9 @@ function App() {
 
   // fetch states 
   const [geoLocCities, setGeoLocCities] = useState<IGeoLocCities[]>([]);
-  console.log('geoLocCities: ', geoLocCities)
+  //console.log('geoLocCities: ', geoLocCities)
   const [weatherForecasts, setWeatherForecasts] = useState<IWeatherForecast[]>([]);
-  console.log('weatherForecasts: ', weatherForecasts)
+  //console.log('weatherForecasts: ', weatherForecasts)
 
   // Geo Loc
   useMemo(() => {
@@ -73,22 +85,27 @@ function App() {
 
   // Weather Forecast
   useMemo(() => {
-    const forecastSearchPromises = geoLocCities.map(glco => getForecastPromise(glco))
+    let geoLocCitiesMod = [];
+    if(currentPosition){
+      geoLocCitiesMod = [...geoLocCities, currentPosition]
+    }
+    else{
+      geoLocCitiesMod = [...geoLocCities]
+    }
+    const forecastSearchPromises = geoLocCitiesMod.map(glco => getForecastPromise(glco))
     resolveAndSetWeatherForecasts(forecastSearchPromises, setWeatherForecasts)
   }
   , [JSON.stringify(geoLocCities)])// JSON.stringify should be improved
-
-  
-
 
   const dashboardBtnObjs: IDashboardBtnObj[] = weatherForecasts.map(x => {
     return {
             cityId: x.city.id, 
             cityName: x.city.name,
-            currentTempK: x.list[0].main.temp
+            currentTempK: x.list[0].main.temp,
+            action: setSelectedForecast
           }
   })
-  console.log('dashboardBtnObjs: ', dashboardBtnObjs);
+  //console.log('dashboardBtnObjs: ', dashboardBtnObjs);
 
   const forecastObj: IWeatherForecast | undefined = weatherForecasts.find(x => x.city.id === selectedForecast)
 
@@ -97,7 +114,7 @@ function App() {
       {
       selectedForecast ? 
         <Forecast forecastObj={forecastObj as IWeatherForecast} selectForecast={setSelectedForecast}/> :
-        <Dashboard dashboardBtnObjs={dashboardBtnObjs} selectForecast={setSelectedForecast}/>
+        <Dashboard dashboardBtnObjs={dashboardBtnObjs} citiesToLookup={{citiesToLookup, setCitiesToLookup}}/>
       }
     </>
   );

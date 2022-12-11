@@ -4,13 +4,12 @@ import style from "./DashboardBtn.module.css"
 
 interface IDashboardBtnProps {
     dashboardBtnObj: IDashboardBtnObj;
-    selectForecast: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const DashboardBtn = ({dashboardBtnObj, selectForecast}: IDashboardBtnProps) => {
+const DashboardBtn = ({dashboardBtnObj}: IDashboardBtnProps) => {
     const dbo = dashboardBtnObj;
     return (<>
-        <button className={style.dasboardBtn} onClick={() => selectForecast(dbo.cityId)}>
+        <button className={style.dasboardBtn} onClick={() => dbo.action(dbo.cityId)}>
             <span>{dbo.cityName}</span>
             <span>{dbo.currentTempK}</span>
         </button>
