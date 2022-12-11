@@ -11,13 +11,44 @@ const getCityGeoLocPromise = (co: any) => {
   return fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${co.city}&limit=1&appid=3683c0f2ebd11c8063d6f9d995541a8e`);
 }
 
-const resolveAndSetGeoLocCities = (citiesSearchPromises: Promise<Response>[], setGeoLocCities: React.Dispatch<React.SetStateAction<IGeoLocCities[]>>) => {
+const validateGeoLocResp = (jsonResp: any[], citiesToLookup: ILookupCities[], setCitiesToLookup: React.Dispatch<React.SetStateAction<ILookupCities[]>>) => {
+  let invaliIdx: number | null = null;
+  if(jsonResp.length === citiesToLookup.length){
+    citiesToLookup.forEach((city, idx) => {
+      if(!jsonResp.find(x => x?.name === city.city)){
+        alert('No result found for '+city.city+'.')
+        invaliIdx = idx;
+      }
+    })
+  }
+  else{
+    invaliIdx = Number.MAX_SAFE_INTEGER;
+  }
+  if(invaliIdx) {
+    citiesToLookup.splice(invaliIdx, 1)
+    localStorage.setItem("citiesToLookup", JSON.stringify(citiesToLookup))
+    setCitiesToLookup(citiesToLookup)
+    return 0; // Some sort of error handling. Could be something with new Error
+  }
+  else{
+    return 1;
+  }
+}
+
+const resolveAndSetGeoLocCities = (citiesSearchPromises: Promise<Response>[], 
+                                  setGeoLocCities: React.Dispatch<React.SetStateAction<IGeoLocCities[]>>,
+                                  citiesToLookup: ILookupCities[], 
+                                  setCitiesToLookup: React.Dispatch<React.SetStateAction<ILookupCities[]>>) => {
   Promise.all(citiesSearchPromises)
         .then(responses => {
           return Promise.all(responses.map(resp => resp.text()))
         })
         .then((respTextArr:string[]) => {
-          setGeoLocCities(respTextArr.map(respTextElem => JSON.parse(respTextElem)[0] )) 
+          const jsonResp = respTextArr.map(respTextElem => JSON.parse(respTextElem)[0])
+          const validResponse = validateGeoLocResp(jsonResp, citiesToLookup, setCitiesToLookup)
+          if(validResponse){
+            setGeoLocCities(jsonResp) 
+          }
         });
 }
 
@@ -36,7 +67,7 @@ const resolveAndSetWeatherForecasts = (citiesSearchPromises: Promise<Response>[]
         });
 }
 
-const getLookupCities = () => {
+const getLookupCitiesFromLocal = () => {
   if(localStorage["citiesToLookup"]){
     return JSON.parse(localStorage["citiesToLookup"])
   }
@@ -58,6 +89,17 @@ const getLookupCities = () => {
   }
 }
 
+const syncCityNames = (geoLocCities:IGeoLocCities[], 
+                       weatherForecasts:IWeatherForecast[] ) => {
+      
+      geoLocCities.forEach(glc => {
+        if(glc){
+          const weatherForecastObj = weatherForecasts.find(wf => wf.city.coord.lat === Number(glc.lat.toFixed(3)))
+          if(weatherForecastObj) weatherForecastObj.city.name = glc.name;                  
+        }
+      })
+}
+
 function App() {
   const [selectedForecast, setSelectedForecast] = useState<number | null>(null);
   
@@ -74,28 +116,29 @@ function App() {
     setCurrentPosition({name: "My Location",lat: position.coords.latitude, lon: position.coords.longitude})
   }
   useMemo(() => {getLocation()}, [JSON.stringify(currentPosition)])
-  //console.log('currentPosition: ', currentPosition);
 
   // made like object due to assumption that country code can be sent to API
-  const [citiesToLookup, setCitiesToLookup] = useState<ILookupCities[]>(getLookupCities());
+  const [citiesToLookup, setCitiesToLookup] = useState<ILookupCities[]>(getLookupCitiesFromLocal());
   localStorage.setItem("citiesToLookup", JSON.stringify(citiesToLookup))
 
 
   // fetch states 
   const [geoLocCities, setGeoLocCities] = useState<IGeoLocCities[]>([]);
-  //console.log('geoLocCities: ', geoLocCities)
   const [weatherForecasts, setWeatherForecasts] = useState<IWeatherForecast[]>([]);
-  //console.log('weatherForecasts: ', weatherForecasts)
+
+  syncCityNames(geoLocCities, weatherForecasts);
 
   // Geo Loc
   useMemo(() => {
     const citiesSearchPromises = citiesToLookup.map(co => getCityGeoLocPromise(co))
-    resolveAndSetGeoLocCities(citiesSearchPromises, setGeoLocCities)
+    resolveAndSetGeoLocCities(citiesSearchPromises, setGeoLocCities, citiesToLookup, setCitiesToLookup)
   }
   , [JSON.stringify(citiesToLookup)])// JSON.stringify should be improved
 
   // Weather Forecast
   useMemo(() => {
+    JSON.stringify(geoLocCities)
+    //debugger
     let geoLocCitiesMod = [];
     if(currentPosition){
       geoLocCitiesMod = [...geoLocCities, currentPosition]
@@ -116,7 +159,6 @@ function App() {
             action: setSelectedForecast
           }
   })
-  //console.log('dashboardBtnObjs: ', dashboardBtnObjs);
 
   const forecastObj: IWeatherForecast | undefined = weatherForecasts.find(x => x.city.id === selectedForecast)
 
@@ -127,7 +169,8 @@ function App() {
       {
       selectedForecast ? 
         <Forecast tempUnit={tempUnit} forecastObj={forecastObj as IWeatherForecast} selectForecast={setSelectedForecast}/> :
-        <Dashboard tempUnit={tempUnit} setTempUnit={setTempUnit} dashboardBtnObjs={dashboardBtnObjs} citiesToLookup={{citiesToLookup, setCitiesToLookup}}/>
+        dashboardBtnObjs ? <Dashboard tempUnit={tempUnit} setTempUnit={setTempUnit} dashboardBtnObjs={dashboardBtnObjs} co={{citiesToLookup, setCitiesToLookup}} /> :
+        <span>Spinner</span>
       }
     </>
   );

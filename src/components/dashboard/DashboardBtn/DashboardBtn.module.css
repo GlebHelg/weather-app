@@ -1,9 +1,29 @@
 .dasboardBtn{
-	background: none;
-	border: solid 1px black;
-    height: 30px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    
+    height: 30px;
+	background: none;
+	border: solid 1px green;
+    width: 100%;
+}
+
+
+.dasboardBtnX{
+    background: none;
+	border: solid 1px red;
+    width: 25px;
+    color: red;
+    font-weight: 800;
+}
+
+.dasboardBtnWrapDiv{
+    display: flex;
+    padding: 1px 15px 1px 15px;
+}
+
+.dasboardBtnWrapDiv{
+    display: flex;
     padding: 1px 15px 1px 15px;
 }

@@ -10,27 +10,27 @@ interface IDashboardProps{
     tempUnit: tempUnitType;
     setTempUnit: React.Dispatch<React.SetStateAction<tempUnitType>>;
     dashboardBtnObjs: IDashboardBtnObj[];
-    citiesToLookup: {
+    co: {
         citiesToLookup: ILookupCities[], 
         setCitiesToLookup: React.Dispatch<React.SetStateAction<ILookupCities[]>>
     }
 }
 
-const Dashboard = ({dashboardBtnObjs, citiesToLookup, tempUnit, setTempUnit}: IDashboardProps) => {
+const Dashboard = ({dashboardBtnObjs, co, tempUnit, setTempUnit}: IDashboardProps) => {
     
     return (<>
         <div className={style.dashboardHeader}>
             <h1>Dashboard</h1>
         </div>
         <div className={style.dashboardBtns}>
-            {dashboardBtnObjs.map((btnObj, idx) => <DashboardBtn key={idx+"dash_btn"} dashboardBtnObj={btnObj} tempUnit={tempUnit}/> )}
+            {dashboardBtnObjs.map((btnObj, idx) => <DashboardBtn key={idx+"dash_btn"} dashboardBtnObj={btnObj} tempUnit={tempUnit} co={co}/> )}
         </div>
         <div className={style.formDiv}>
             <div className={style.formDivCity}>
                 <form onSubmit={(e) => {
                     e.preventDefault()
                     const city = (document.getElementById('add-city-input') as any).value;
-                    citiesToLookup.setCitiesToLookup([...citiesToLookup.citiesToLookup, {city: city ?? '', country: ''}])
+                    co.setCitiesToLookup([...co.citiesToLookup, {city: city ?? '', country: ''}])
                     }}>
                     <input className={""}
                                 type={"text"} 
