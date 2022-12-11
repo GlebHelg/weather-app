@@ -4,14 +4,15 @@ import style from "./Forecast.module.css"
 import { IWeatherForecast } from '../../common/interfaces';
 import SecondaryInfoCard from '../../components/forecast/SecondaryInfoCard/SecondaryInfoCard';
 import PrimaryInfoCard from '../../components/forecast/PrimaryInfoCard/PrimaryInfoCard';
-import { convertTempToUnit, getHHMMFromDate } from '../../common/utils';
+import { convertTempToUnit, getHHMMFromDate, tempUnitType } from '../../common/utils';
 
 interface IForecastProps {
+    tempUnit: tempUnitType;
     forecastObj: IWeatherForecast;
     selectForecast: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
+const Forecast = ({forecastObj, selectForecast, tempUnit}: IForecastProps) => {
 
     const sunriseDO = new Date(forecastObj.city.sunrise * 1000);
     const sunsetDO  = new Date(forecastObj.city.sunset * 1000);
@@ -21,11 +22,11 @@ const Forecast = ({forecastObj, selectForecast}: IForecastProps) => {
     // For PrimaryInfoCard
     let outlook    = forecastObj.list[0].weather[0].description
     outlook        = outlook[0].toUpperCase()+outlook.slice(1)
-    const unit = "C";
+    
     const outlookText = outlook;
-    const temp        = {value: convertTempToUnit(forecastObj.list[0].main.temp, unit), unit: unit};
-    const tempH       = {value: convertTempToUnit(forecastObj.list[0].main.temp_max, unit), unit: unit};
-    const tempL       = {value: convertTempToUnit(forecastObj.list[0].main.temp_min, unit), unit: unit};
+    const temp        = {value: convertTempToUnit(forecastObj.list[0].main.temp, tempUnit), unit: tempUnit};
+    const tempH       = {value: convertTempToUnit(forecastObj.list[0].main.temp_max, tempUnit), unit: tempUnit};
+    const tempL       = {value: convertTempToUnit(forecastObj.list[0].main.temp_min, tempUnit), unit: tempUnit};
 
     // For SecondaryInfoCard
     const sicObjects = [

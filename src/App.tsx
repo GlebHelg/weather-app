@@ -5,6 +5,7 @@ import Forecast from './pages/forecast/Forecast';
 
 import {ILookupCities, IGeoLocCities, IWeatherForecast} from './common/interfaces';
 import { IDashboardBtnObj } from './pages/dashboard/dashboardInterfaces';
+import { tempUnitType } from './common/utils';
 
 const getCityGeoLocPromise = (co: any) => {
   return fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${co.city}&limit=1&appid=3683c0f2ebd11c8063d6f9d995541a8e`);
@@ -109,12 +110,14 @@ function App() {
 
   const forecastObj: IWeatherForecast | undefined = weatherForecasts.find(x => x.city.id === selectedForecast)
 
+  const [tempUnit, setTempUnit] = useState<tempUnitType>("K")
+
   return (
     <>
       {
       selectedForecast ? 
-        <Forecast forecastObj={forecastObj as IWeatherForecast} selectForecast={setSelectedForecast}/> :
-        <Dashboard dashboardBtnObjs={dashboardBtnObjs} citiesToLookup={{citiesToLookup, setCitiesToLookup}}/>
+        <Forecast tempUnit={tempUnit} forecastObj={forecastObj as IWeatherForecast} selectForecast={setSelectedForecast}/> :
+        <Dashboard tempUnit={tempUnit} setTempUnit={setTempUnit} dashboardBtnObjs={dashboardBtnObjs} citiesToLookup={{citiesToLookup, setCitiesToLookup}}/>
       }
     </>
   );
