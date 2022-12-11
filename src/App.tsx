@@ -36,6 +36,27 @@ const resolveAndSetWeatherForecasts = (citiesSearchPromises: Promise<Response>[]
         });
 }
 
+const getLookupCities = () => {
+  if(localStorage["citiesToLookup"]){
+    return JSON.parse(localStorage["citiesToLookup"])
+  }
+  else{
+    return [
+      {
+        city: 'Berlin',
+        country: 'DE'
+      },
+      {
+        city: 'London',
+        country: 'GB'
+      },
+      {
+        city: 'Oslo',
+        country: 'GB'
+      }
+    ];
+  }
+}
 
 function App() {
   const [selectedForecast, setSelectedForecast] = useState<number | null>(null);
@@ -56,20 +77,9 @@ function App() {
   //console.log('currentPosition: ', currentPosition);
 
   // made like object due to assumption that country code can be sent to API
-  const [citiesToLookup, setCitiesToLookup] = useState<ILookupCities[]>([
-    {
-      city: 'Berlin',
-      country: 'DE'
-    },
-    {
-      city: 'London',
-      country: 'GB'
-    },
-    {
-      city: 'Oslo',
-      country: 'GB'
-    }
-  ]);
+  const [citiesToLookup, setCitiesToLookup] = useState<ILookupCities[]>(getLookupCities());
+  localStorage.setItem("citiesToLookup", JSON.stringify(citiesToLookup))
+
 
   // fetch states 
   const [geoLocCities, setGeoLocCities] = useState<IGeoLocCities[]>([]);
