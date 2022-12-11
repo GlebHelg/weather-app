@@ -28,39 +28,36 @@ const Dashboard = ({dashboardBtnObjs, citiesToLookup, tempUnit, setTempUnit}: ID
         <div className={style.dashboardBtns}>
             {dashboardBtnObjs.map((btnObj, idx) => <DashboardBtn key={idx+"dash_btn"} dashboardBtnObj={btnObj} tempUnit={tempUnit}/> )}
         </div>
-        <div>
+        <div className={style.formDiv}>
             <div className={style.formDivCity}>
                 <form onSubmit={(e) => {
                     e.preventDefault()
-                    //console.log(e.target[0].value)
-                    const city = (document.getElementById('add-another-city') as any).value;
+                    const city = (document.getElementById('add-city-input') as any).value;
                     citiesToLookup.setCitiesToLookup([...citiesToLookup.citiesToLookup, {city: city ?? '', country: ''}])
                     }}>
                     <input className={""}
                                 type={"text"} 
-                                id={"add-another-city"} 
+                                id={"add-city-input"} 
                                 defaultValue={"Rome"}/>
-                    <input className={""}
+                    <input className={style.formSubmitBtn}
                                 type={"submit"} 
                                 id={"submit"} 
-                                value={"Add city"}/>
+                                value={"Add City"}/>
                 </form>
             </div>
             <div className={style.formDivCity}>
                 <form
                     onSubmit={(e) => {
                         e.preventDefault()
-                        const unit = (document.getElementById('selectUnit') as any).value;
-                        console.log(e)
+                        const unit = (document.getElementById('temp-unit-select') as any).value;
                         setTempUnit(unit);
-                        //addFormFieldElement(e, props.formFields, props.setFormFields)
                     }}>
-                    <select id="selectUnit">
+                    <select id="temp-unit-select">
                         <option>K</option>
                         <option>C</option>
                         <option>F</option>
                     </select>
-                    <input type="submit" value="Set Unit"/>
+                    <input className={style.formSubmitBtn} type="submit" value="Set Unit"/>
                 </form>
             </div>
         </div>

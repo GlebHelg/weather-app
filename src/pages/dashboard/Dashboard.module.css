@@ -8,18 +8,28 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 5px;
-    margin: 0 10px 0 10px;
+    margin: 0 10% 0 10%;
 }
 
 .formDiv{
     display: flex;
     flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap-reverse;
+    margin-top: 20px;
 }
 
 .formDivCity{
     display: flex;
     justify-content: space-evenly;
-    margin-top: 20px;
+    width: 30%;
 }
 
+.formDivCity form{
+    width: 100%;
+    text-align: right;
+}
 
+.formSubmitBtn{
+    width: 67px;
+}
